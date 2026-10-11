@@ -35,15 +35,23 @@ export function DiscountDialog({
   }) => void;
 }) {
   const [draftLines, setDraftLines] = useState(lines);
+  const [amounts, setAmounts] = useState<Record<string, string>>({});
   const [draftBillMode, setDraftBillMode] = useState<DiscountMode>(billMode);
   const [draftBillValue, setDraftBillValue] = useState(String(billValue || ""));
 
   useEffect(() => {
     if (!open) return;
     setDraftLines(lines);
+    setAmounts(
+      Object.fromEntries(
+        lines.map((line) => [line.id, line.discountValue ? String(line.discountValue) : ""]),
+      ),
+    );
     setDraftBillMode(billMode);
     setDraftBillValue(billValue ? String(billValue) : "");
-  }, [open, lines, billMode, billValue]);
+    // Snapshot the cart only when the dialog opens. Later cart refreshes must not wipe what is being typed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   const preview = useMemo(() => {
     const priced = draftLines.map((line) =>
@@ -89,15 +97,16 @@ export function DiscountDialog({
                   <option value="percent">Percent</option>
                 </SelectInput>
                 <TextInput
-                  type="number"
-                  min="0"
-                  step="0.01"
+                  inputMode="decimal"
                   disabled={!line.discountMode}
-                  value={line.discountMode ? line.discountValue || "" : ""}
+                  value={line.discountMode ? (amounts[line.id] ?? "") : ""}
                   placeholder={line.discountMode === "percent" ? "%" : "Rs"}
-                  onChange={(event) =>
-                    updateLine(line.id, { discountValue: Number(event.target.value) || 0 })
-                  }
+                  onChange={(event) => {
+                    const raw = event.target.value;
+                    if (raw !== "" && !/^\d*\.?\d*$/.test(raw)) return;
+                    setAmounts((current) => ({ ...current, [line.id]: raw }));
+                    updateLine(line.id, { discountValue: Number(raw) || 0 });
+                  }}
                 />
               </div>
             </div>
