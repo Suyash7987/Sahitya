@@ -43,11 +43,13 @@ export async function findDuplicateItem({
   code?: string;
   excludeId?: string;
 }) {
-  const titleClash = await Book.findOne({
-    kind: kind === "accessory" ? "accessory" : { $ne: "accessory" as const },
-    title: { $regex: `^${escapeRegex(title)}$`, $options: "i" },
-    ...(excludeId ? { _id: { $ne: excludeId } } : {}),
-  });
+  const titleClash = title
+    ? await Book.findOne({
+        kind: kind === "accessory" ? "accessory" : { $ne: "accessory" as const },
+        title: { $regex: `^${escapeRegex(title)}$`, $options: "i" },
+        ...(excludeId ? { _id: { $ne: excludeId } } : {}),
+      })
+    : null;
   if (titleClash) {
     return kind === "book"
       ? "A book with this title already exists."

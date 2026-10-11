@@ -42,8 +42,8 @@ export async function PUT(
   if (!isItemKind(kind)) {
     return jsonError("Choose Book or Accessories.");
   }
-  if (!title) {
-    return jsonError(kind === "book" ? "Title is required." : "Accessory name is required.");
+  if (kind === "accessory" && !title) {
+    return jsonError("Accessory name is required.");
   }
   if (!Number.isInteger(stock) || stock < 0) {
     return jsonError("Stock must be a whole number of zero or more.");

@@ -92,7 +92,7 @@ export function BookForm({ book }: { book?: BookRecord }) {
         <>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Title">
-              <TextInput value={form.title} onChange={(e) => update("title", e.target.value)} required />
+              <TextInput value={form.title} onChange={(e) => update("title", e.target.value)} />
             </Field>
             <Field label="Language">
               <SelectInput value={form.language} onChange={(e) => update("language", e.target.value)}>

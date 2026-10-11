@@ -99,7 +99,7 @@ export function InventoryManager({ books }: { books: BookRecord[] }) {
             <p className="text-[11px] uppercase tracking-[0.16em] text-gold">
               {item.kind === "accessory" ? "Accessories" : item.language || "Book"}
             </p>
-            <h3 className="mt-1 font-display text-xl leading-tight">{item.title}</h3>
+            <h3 className="mt-1 font-display text-xl leading-tight">{item.title || item.code}</h3>
             {item.code ? <p className="mt-1 font-mono text-xs break-all text-muted">{item.code}</p> : null}
             <div className="mt-3 flex items-center justify-between gap-3">
               <span className="font-semibold">{formatINR(item.price)}</span>
@@ -152,7 +152,7 @@ export function InventoryManager({ books }: { books: BookRecord[] }) {
             <tbody>
               {pageItems.map((item) => (
                 <tr key={item._id} className="border-b border-line last:border-0">
-                  <td className="px-4 py-3 font-medium">{item.title}</td>
+                  <td className="px-4 py-3 font-medium">{item.title || item.code}</td>
                   <td className="px-4 py-3 text-muted">
                     {item.kind === "accessory" ? "Accessories" : "Book"}
                   </td>
@@ -232,7 +232,7 @@ export function InventoryManager({ books }: { books: BookRecord[] }) {
         title="Remove this item?"
         message={
           deleteTarget
-            ? `"${deleteTarget.title}" will be deleted from inventory. This cannot be undone.`
+            ? `"${deleteTarget.title || deleteTarget.code}" will be deleted from inventory. This cannot be undone.`
             : ""
         }
         pending={Boolean(pendingId)}

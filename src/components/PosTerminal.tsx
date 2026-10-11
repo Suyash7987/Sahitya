@@ -297,7 +297,7 @@ export function PosTerminal({ books }: { books: BookRecord[] }) {
       const existing = current.find((line) => line.book._id === book._id);
       const nextQty = (existing?.quantity ?? 0) + 1;
       if (nextQty > book.stock) {
-        setError(`Only ${book.stock} copies of "${book.title}" are in stock.`);
+        setError(`Only ${book.stock} copies of "${book.title || book.code}" are in stock.`);
         return current;
       }
       if (existing) {
@@ -329,7 +329,7 @@ export function PosTerminal({ books }: { books: BookRecord[] }) {
       if (line.book._id !== bookId) return [line];
       if (!Number.isInteger(quantity) || quantity < 1) return [line];
       if (quantity > line.book.stock) {
-        setError(`Only ${line.book.stock} copies of "${line.book.title}" are in stock.`);
+        setError(`Only ${line.book.stock} copies of "${line.book.title || line.book.code}" are in stock.`);
         return [{ ...line, quantity: line.book.stock }];
       }
       return [{ ...line, quantity }];
@@ -502,7 +502,9 @@ export function PosTerminal({ books }: { books: BookRecord[] }) {
               <p className="text-[11px] uppercase tracking-[0.16em] text-gold">
                 {book.kind === "accessory" ? "Accessories" : book.language}
               </p>
-              <h3 className="mt-1 font-display text-lg leading-tight sm:text-xl">{book.title}</h3>
+              <h3 className="mt-1 font-display text-lg leading-tight sm:text-xl">
+                {book.title || book.code}
+              </h3>
               {book.kind === "book" && book.code ? (
                 <p className="text-sm text-muted">{book.code}</p>
               ) : null}
@@ -587,7 +589,7 @@ export function PosTerminal({ books }: { books: BookRecord[] }) {
       open={discountOpen}
       lines={cart.map((line) => ({
         id: line.book._id,
-        title: line.book.title,
+        title: line.book.title || line.book.code,
         unitPrice: line.book.price,
         quantity: line.quantity,
         discountMode: line.discountMode,
@@ -729,7 +731,7 @@ function BillPanel({
             {cart.map((line) => (
               <div key={line.book._id} className="flex justify-between gap-3 text-sm">
                 <span className="min-w-0 break-words">
-                  {line.book.title} × {line.quantity}
+                  {line.book.title || line.book.code} × {line.quantity}
                 </span>
                 <span className="shrink-0 font-medium">
                   {formatINR(
@@ -888,7 +890,7 @@ function BillPanel({
                   <div key={line.book._id} className="rounded-2xl bg-paper px-3 py-3">
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="font-medium break-words">{line.book.title}</p>
+                        <p className="font-medium break-words">{line.book.title || line.book.code}</p>
                         <p className="text-sm text-muted">
                           {itemDetailLine(line.book)} · {formatINR(line.book.price)} each
                         </p>
@@ -897,7 +899,7 @@ function BillPanel({
                         type="button"
                         className="shrink-0 p-1 text-muted hover:text-clay"
                         onClick={() => onRemove(line.book._id)}
-                        aria-label={`Remove ${line.book.title}`}
+                        aria-label={`Remove ${line.book.title || line.book.code}`}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -910,7 +912,7 @@ function BillPanel({
                         <QtyField
                           quantity={line.quantity}
                           max={line.book.stock}
-                          label={line.book.title}
+                          label={line.book.title || line.book.code}
                           onCommit={(quantity) => onSetQty(line.book._id, quantity)}
                         />
                         <Button variant="secondary" size="sm" onClick={() => onChangeQty(line.book._id, 1)}>

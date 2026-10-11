@@ -17,7 +17,7 @@ export type BookDocument = {
 const BookSchema = new mongoose.Schema<BookDocument>(
   {
     kind: { type: String, enum: ["book", "accessory"], default: "book", required: true },
-    title: { type: String, required: true, trim: true },
+    title: { type: String, default: "", trim: true },
     language: { type: String, default: "", trim: true },
     code: { type: String, default: "", trim: true },
     price: { type: Number, required: true, min: 0, default: 0 },
