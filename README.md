@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sahitya
 
-## Getting Started
+A Next.js bookstore and library counter with two portals:
 
-First, run the development server:
+- **Admin** — inventory CRUD (add, view, update, delete books)
+- **Front desk / customer portal** — browse stock, bill a customer, download a PDF
+
+There are no sales graphs or analytics dashboards.
+
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start MongoDB. Either run it locally, use [MongoDB Atlas](https://www.mongodb.com/atlas), or:
+
+```bash
+docker compose up -d
+```
+
+3. Copy environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Set `MONGODB_URI` if your database is not on `127.0.0.1:27017`.
+
+4. Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo logins
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Portal | Username | Password |
+| --- | --- | --- |
+| Admin inventory | `admin` | `admin123` |
+| Front desk billing | `desk` | `desk123` |
 
-## Learn More
+The first successful database connection creates these users and a starter shelf of books.
 
-To learn more about Next.js, take a look at the following resources:
+## What each portal does
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Admin**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- See all titles, prices, and stock
+- Add a book
+- Edit details such as price and stock
+- Delete a title
 
-## Deploy on Vercel
+**Front desk**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Search and add books to a bill
+- Enter the customer name
+- Save the bill (stock is reduced)
+- Download a PDF invoice
