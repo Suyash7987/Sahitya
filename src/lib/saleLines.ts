@@ -49,7 +49,7 @@ export function buildSaleLines(
     );
     items.push({
       bookId: book._id,
-      title: book.title || book.code,
+      title: book.title || book.code || "",
       kind: book.kind === "accessory" ? "accessory" : "book",
       language: book.language || "",
       code: book.code || "",
