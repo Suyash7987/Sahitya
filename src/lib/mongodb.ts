@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { mongoErrorMessage, toDirectMongoUri, usePublicDns } from "@/lib/mongoUri";
 import { dropLegacyBookTextIndexes } from "@/models/Book";
-import { seedIfEmpty } from "@/lib/seed";
 
 type MongooseCache = {
   conn: typeof mongoose | null;
@@ -204,7 +203,6 @@ export async function dbConnect() {
   if (!cached.bookIndexesRepaired) {
     try {
       await dropLegacyBookTextIndexes();
-      await seedIfEmpty();
     } catch (error) {
       console.error("MongoDB post-connect setup failed:", error);
     } finally {

@@ -37,15 +37,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Demo logins
-
-| Portal | Username | Password |
-| --- | --- | --- |
-| Admin inventory | `admin` | `admin123` |
-| Front desk billing | `desk` | `desk123` |
-
-The first successful database connection creates these users and a starter shelf of books.
-
 ## What each portal does
 
 **Admin**
