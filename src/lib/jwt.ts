@@ -15,6 +15,7 @@ export async function createSessionToken(user: SessionUser) {
     username: user.username,
     name: user.name,
     role: user.role,
+    sessionVersion: user.sessionVersion,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -38,6 +39,7 @@ export async function readSessionToken(token: string): Promise<SessionUser | nul
       username: payload.username,
       name: payload.name,
       role: payload.role,
+      sessionVersion: typeof payload.sessionVersion === "number" ? payload.sessionVersion : 0,
     };
   } catch {
     return null;

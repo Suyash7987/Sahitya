@@ -13,16 +13,11 @@ type AccessUser = {
   phone: string;
 };
 
-export function AccessManager({
-  onUsersChange,
-}: {
-  onUsersChange?: (users: AccessUser[]) => void;
-}) {
+export function AccessManager() {
   const [users, setUsers] = useState<AccessUser[]>([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const [removeTarget, setRemoveTarget] = useState<AccessUser | null>(null);
@@ -38,10 +33,6 @@ export function AccessManager({
     void load();
   }, []);
 
-  useEffect(() => {
-    onUsersChange?.(users);
-  }, [users, onUsersChange]);
-
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
     setPending(true);
@@ -49,7 +40,7 @@ export function AccessManager({
     const response = await fetch("/api/access", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone, password }),
+      body: JSON.stringify({ name, email, phone }),
     });
     const data = (await response.json().catch(() => ({}))) as { error?: string; user?: AccessUser };
     if (!response.ok || !data.user) {
@@ -61,7 +52,6 @@ export function AccessManager({
     setName("");
     setEmail("");
     setPhone("");
-    setPassword("");
     setPending(false);
   }
 
@@ -105,19 +95,9 @@ export function AccessManager({
             />
           </Field>
         </div>
-        <Field label="Password">
-          <TextInput
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            autoComplete="new-password"
-            required
-            minLength={6}
-          />
-        </Field>
         <p className="text-sm text-muted">
-          Enter an email, a phone number, or both. They sign in with that and this password, and can
-          use the front desk only.
+          Enter an email, a phone number, or both. They sign in with that and the front desk
+          password, and can use the front desk only.
         </p>
         {error ? <p className="rounded-xl bg-clay/10 px-3 py-2 text-sm text-clay">{error}</p> : null}
         <Button type="submit" disabled={pending}>

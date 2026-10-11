@@ -9,6 +9,7 @@ export type UserDocument = {
   phone?: string;
   passwordHash: string;
   role: Role;
+  sessionVersion?: number;
 };
 
 const UserSchema = new mongoose.Schema<UserDocument>(
@@ -25,6 +26,7 @@ const UserSchema = new mongoose.Schema<UserDocument>(
     phone: { type: String, trim: true },
     passwordHash: { type: String, required: true },
     role: { type: String, enum: ["admin", "desk"], required: true },
+    sessionVersion: { type: Number, default: 0 },
   },
   { timestamps: true },
 );

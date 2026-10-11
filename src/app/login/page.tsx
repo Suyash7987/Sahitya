@@ -23,14 +23,6 @@ export default function LoginPage() {
           <div className="mt-6 rounded-2xl border border-line bg-card p-4 shadow-[0_20px_60px_rgba(28,22,18,0.06)] sm:mt-8 sm:rounded-3xl sm:p-6">
             <LoginForm />
           </div>
-          <div className="mt-6 rounded-2xl border border-dashed border-line px-4 py-3 text-sm text-muted">
-            <p>
-              Admin: <span className="font-medium text-ink">admin / admin123</span>
-            </p>
-            <p className="mt-1">
-              Front desk: <span className="font-medium text-ink">desk / desk123</span>
-            </p>
-          </div>
         </div>
       </section>
     </div>

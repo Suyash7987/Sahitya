@@ -1,8 +1,7 @@
 import bcrypt from "bcryptjs";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { jsonError } from "@/lib/api";
-import { SESSION_COOKIE } from "@/lib/constants";
+import { setSessionCookie } from "@/lib/auth";
 import { createSessionToken } from "@/lib/jwt";
 import { dbConnect } from "@/lib/mongodb";
 import { mongoErrorMessage } from "@/lib/mongoUri";
@@ -43,16 +42,10 @@ export async function POST(request: Request) {
       username: user.username,
       name: user.name,
       role: user.role,
+      sessionVersion: user.sessionVersion ?? 0,
     });
 
-    const cookieStore = await cookies();
-    cookieStore.set(SESSION_COOKIE, token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    await setSessionCookie(token);
 
     return NextResponse.json({
       user: {

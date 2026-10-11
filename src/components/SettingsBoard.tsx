@@ -2,22 +2,8 @@
 
 import { AccessManager } from "@/components/AccessManager";
 import { PasswordManager } from "@/components/PasswordManager";
-import { useCallback, useState } from "react";
-
-type DeskUser = {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-};
 
 export function SettingsBoard() {
-  const [deskUsers, setDeskUsers] = useState<DeskUser[]>([]);
-  const onUsersChange = useCallback((users: DeskUser[]) => {
-    setDeskUsers(users);
-  }, []);
-
   return (
     <div className="space-y-10">
       <section className="space-y-4">
@@ -28,17 +14,18 @@ export function SettingsBoard() {
             inventory.
           </p>
         </div>
-        <AccessManager onUsersChange={onUsersChange} />
+        <AccessManager />
       </section>
 
       <section className="space-y-4">
         <div>
           <h2 className="font-display text-2xl">Passwords</h2>
           <p className="mt-1 text-sm leading-6 text-muted">
-            Set a new password for a front desk account, or for your own admin account.
+            Set the admin password and the front desk password. The front desk password is shared by
+            every front desk sign-in.
           </p>
         </div>
-        <PasswordManager deskUsers={deskUsers} />
+        <PasswordManager />
       </section>
     </div>
   );

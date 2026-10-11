@@ -6,6 +6,7 @@ export type SessionUser = {
   username: string;
   name: string;
   role: Role;
+  sessionVersion: number;
 };
 
 export type BookRecord = {

@@ -1,8 +1,8 @@
-import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { jsonError, requireUser } from "@/lib/api";
 import { dbConnect } from "@/lib/mongodb";
 import { isEmail } from "@/lib/utils";
+import { DeskCredential } from "@/models/DeskCredential";
 import { User } from "@/models/User";
 
 function digits(value: string) {
@@ -48,13 +48,11 @@ export async function POST(request: Request) {
   const name = String(body?.name ?? "").trim();
   const email = String(body?.email ?? "").trim().toLowerCase();
   const phone = digits(String(body?.phone ?? ""));
-  const password = String(body?.password ?? "");
 
   if (!name) return jsonError("Name is required.");
   if (!email && !phone) return jsonError("Enter an email or a phone number.");
   if (email && !isEmail(email)) return jsonError("Enter a valid email address.");
   if (phone && phone.length < 10) return jsonError("Enter a valid phone number.");
-  if (password.length < 6) return jsonError("Password must be at least 6 characters.");
 
   const username = email || phone;
 
@@ -71,12 +69,17 @@ export async function POST(request: Request) {
       return jsonError("That email or phone already has access.");
     }
 
+    const credential = await DeskCredential.findOne({ key: "desk" });
+    if (!credential) {
+      return jsonError("Set the front desk password first.");
+    }
+
     const user = await User.create({
       name,
       username,
       ...(email ? { email } : {}),
       ...(phone ? { phone } : {}),
-      passwordHash: await bcrypt.hash(password, 10),
+      passwordHash: credential.passwordHash,
       role: "desk",
     });
 

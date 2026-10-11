@@ -1,6 +1,7 @@
 "use client";
 
 import { LogoutButton } from "@/components/LogoutButton";
+import { SessionWatch } from "@/components/SessionWatch";
 import { Logo } from "@/components/Logo";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
@@ -54,6 +55,7 @@ export function PortalShell({
 
   return (
     <div className="paper-grid min-h-dvh lg:grid lg:h-dvh lg:max-h-dvh lg:grid-cols-[16rem_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[18rem_minmax(0,1fr)]">
+      <SessionWatch />
       <aside className="hidden bg-forest text-card lg:flex lg:h-dvh lg:max-h-dvh lg:flex-col lg:overflow-hidden lg:border-r lg:border-forest-dark">
         <div className="shrink-0 px-5 py-5 xl:px-6">
           <Link href="/" className="block" aria-label="All World Gayatri Pariwar Bengaluru">
@@ -138,9 +140,11 @@ export function PortalShell({
           </div>
         ) : null}
 
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-5 sm:px-6 sm:py-7 lg:min-h-0 lg:overflow-y-auto lg:px-8 lg:py-6">
-          {children}
-        </main>
+        <div className="lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+          <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-7 lg:px-8 lg:py-6">
+            {children}
+          </main>
+        </div>
       </div>
     </div>
   );
