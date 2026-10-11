@@ -83,7 +83,7 @@ export function PortalShell({
         </div>
       </aside>
 
-      <div className="flex min-h-0 min-w-0 flex-col lg:h-dvh lg:overflow-hidden">
+      <div className="flex h-dvh max-h-dvh min-h-0 min-w-0 flex-col overflow-hidden">
         <header className="sticky top-0 z-40 flex items-center justify-between gap-3 border-b border-line bg-forest px-4 py-2.5 text-card lg:hidden">
           <Link
             href="/"
@@ -140,7 +140,7 @@ export function PortalShell({
           </div>
         ) : null}
 
-        <div className="lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+        <div className="min-h-0 flex-1 overflow-y-auto">
           <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-7 lg:px-8 lg:py-6">
             {children}
           </main>
